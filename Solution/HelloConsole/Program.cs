@@ -36,7 +36,20 @@ namespace HelloConsole
                 }
                 else
                 {
-                    Console.WriteLine($"Hello, {name}!");
+                    Console.Write($"How old are you, {name}?: ");
+                    var age = Console.ReadLine();
+                    int convertedAge;
+
+                    bool success = Int32.TryParse(age, out convertedAge);
+
+                    if (success)
+                    {
+                        Console.WriteLine($"{name} is {convertedAge} years old.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: please enter a valid age.");
+                    }
                 }
             }
             else
