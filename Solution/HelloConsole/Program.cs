@@ -17,10 +17,11 @@ namespace HelloConsole
                     Console.WriteLine("Error: You may only enter a maximum of 2 arguments: a name and age.");
                 }
 
-                var name = args[0];
 
                 if (args.Length == 2)
                 {
+                    var name = args[0];
+
                     int age;
 
                     bool success = Int32.TryParse(args[1], out age);
@@ -36,19 +37,19 @@ namespace HelloConsole
                 }
                 else
                 {
-                    Console.Write($"How old are you, {name}?: ");
-                    var age = Console.ReadLine();
+                    var age = args[0];
                     int convertedAge;
 
-                    bool success = Int32.TryParse(age, out convertedAge);
-
-                    if (success)
+                    if (Int32.TryParse(age, out convertedAge))
                     {
+                        Console.Write("Type your first name and press enter: ");
+                        var name = Console.ReadLine();
+
                         Console.WriteLine($"{name} is {convertedAge} years old.");
                     }
                     else
                     {
-                        Console.WriteLine("Error: please enter a valid age.");
+                        Console.WriteLine("Error: Invalid age.");
                     }
                 }
             }
@@ -62,9 +63,7 @@ namespace HelloConsole
 
                 int convertedAge;
 
-                bool success = Int32.TryParse(age, out convertedAge);
-
-                if (success)
+                if (Int32.TryParse(age, out convertedAge))
                 {
                     Console.WriteLine($"{name} is {convertedAge} years old.");
                 }
