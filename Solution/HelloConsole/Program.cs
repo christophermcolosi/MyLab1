@@ -10,12 +10,58 @@ namespace HelloConsole
     {
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello NFCU!");
-            Console.ReadKey();
+            if (args.Length > 0)
+            {
+                if (args.Length > 2)
+                {
+                    Console.WriteLine("Error: You may only enter a maximum of 2 arguments: a name and age.");
+                }
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+                var name = args[0];
+
+                if (args.Length == 2)
+                {
+                    int age;
+
+                    bool success = Int32.TryParse(args[1], out age);
+
+                    if (success)
+                    {
+                        Console.WriteLine($"{name} is {age} years old.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: please enter a valid age.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Hello, {name}!");
+                }
+            }
+            else
+            {
+                Console.Write("Type your first name and press enter: ");
+                var name = Console.ReadLine();
+
+                Console.Write($"How old are you, {name}?: ");
+                var age = Console.ReadLine();
+
+                int convertedAge;
+
+                bool success = Int32.TryParse(age, out convertedAge);
+
+                if (success)
+                {
+                    Console.WriteLine($"{name} is {convertedAge} years old.");
+                }
+                else
+                {
+                    Console.WriteLine("Error: please enter a valid age.");
+                }
+            }
+
+            Console.ReadKey();
         }
     }
 }

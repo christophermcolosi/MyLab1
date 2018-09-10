@@ -16,5 +16,10 @@ namespace HelloWinForms
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Welcome to my win forms app.");
+        }
     }
 }
