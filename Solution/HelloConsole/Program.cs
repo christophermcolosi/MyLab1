@@ -10,114 +10,161 @@ namespace HelloConsole
             //look specifically at this location for App.config file
             //AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", @"C:\Code\MyLab1\App.config");
 
-            string name = "";
-            int age = 0;
+            // The code provided will print ‘Hello World’ to the console.
+            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
+            string nameStr = String.Empty;
+            string ageStr = String.Empty;
 
             switch (args.Length)
             {
+
                 case 0:
-                    string appConfigName = ConfigurationManager.AppSettings["name"];
-                    string appConfigAge = ConfigurationManager.AppSettings["age"];
+                    {
+                        string appConfigName = ConfigurationManager.AppSettings["name"];
+                        string appConfigAge = ConfigurationManager.AppSettings["age"];
 
-                    if (!string.IsNullOrEmpty(appConfigName) && !string.IsNullOrEmpty(appConfigAge))
-                    {
-                        name = appConfigName;
-                        age = ConvertToNumber(appConfigAge);
-                    }
-                    else if (!string.IsNullOrEmpty(appConfigName))
-                    {
-                        name = appConfigName;
-                        age = PromptUserForAge();
-                    }
-                    else if (!string.IsNullOrEmpty(appConfigAge))
-                    {
-                        name = PromptUserForName();
-                        age = ConvertToNumber(appConfigAge);
-                    }
-                    else
-                    {
-                        name = PromptUserForName();
-                        age = PromptUserForAge();
-                    }
+                        if (!string.IsNullOrEmpty(appConfigName) && !string.IsNullOrEmpty(appConfigAge))
+                        {
+                            nameStr = appConfigName;
 
-                    break;
+                            if (!IsNum(appConfigAge))
+                            {
+                                Console.WriteLine($"You cannot be {appConfigAge} years old...");
+                                ageStr = PromptAge();
+                            }
+                            else
+                            {
+                                ageStr = appConfigAge;
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(appConfigName))
+                        {
+                            nameStr = appConfigName;
+                            ageStr = PromptAge();
+                        }
+                        else if (!string.IsNullOrEmpty(appConfigAge))
+                        {
+                            nameStr = PromptName();
+                            if (!IsNum(appConfigAge))
+                            {
+                                Console.WriteLine($"You cannot be {appConfigAge} years old...");
+                                ageStr = PromptAge();
+                            }
+                            else
+                            {
+                                ageStr = appConfigAge;
+                            }
+                        }
+                        else
+                        {
+                            nameStr = PromptName();
+                            ageStr = PromptAge();
+                        }
+
+                        break;
+                    }
                 case 1:
-                    if (IsNumber(args[0]))
                     {
-                        name = PromptUserForName();
-                        age = ConvertToNumber(args[0]);
-                    }
-                    else
-                    {
-                        name = args[0];
-                        age = PromptUserForAge();
-                    }
+                        if (IsNum(args[0]))
+                        {
+                            nameStr = PromptName();
+                            ageStr = args[0];
+                        }
+                        else
+                        {
+                            nameStr = args[0];
+                            ageStr = PromptAge();
+                        }
 
-                    break;
+                        break;
+                    }
                 case 2:
-                    name = args[0];
-                    age = ConvertToNumber(args[1]);
-                    break;
+                    {
+                        if (IsNum(args[0]) && IsNum(args[1]))
+                        {
+                            nameStr = args[0];
+                            ageStr = args[1];
+                        }
+                        else
+                        if (IsNum(args[0]))
+                        {
+                            ageStr = args[0];
+                            nameStr = args[1];
+                        }
+                        else
+                            if (IsNum(args[1]))
+                        {
+                            nameStr = args[0];
+                            ageStr = args[1];
+                        }
+                        else
+                        {
+                            throw new ArgumentException(String.Format("Neiter {0} or {1} are numbers", args[0], args[1]));
+                        }
+                        break;
+                    }
                 default:
-                    Console.WriteLine("You messed up");
-                    break;
-
+                    throw new ArgumentException(String.Format("Wrong number of Errors"));
             }
 
-            Report(name, age);
+            Console.WriteLine(String.Format("{0} your age is {1}", nameStr, ageStr));
+            // Really your parents Named you a 'Number'?
+            if (IsNum(nameStr))
+            {
+                DoNameIsANumber(nameStr, ageStr);
 
+            }
             Console.ReadKey();
         }
 
-        private static void Report(string name, int age)
+
+
+        private static bool IsNum(string v)
         {
-            Console.WriteLine($"{name} is {age} years old.");
+            return int.TryParse(v, out int n);
+
         }
 
-        private static int PromptUserForAge()
+        private static string PromptAge()
         {
-            var age = 0;
-            bool correctAge = false;
-
+            bool ageCaptured = false;
+            string ageStr = string.Empty;
             do
             {
-                Console.Write("How old are you?: ");
-                age = ConvertToNumber(Console.ReadLine());
-                correctAge = age > 0 ? true : false;
-
-                if (!correctAge)
-                    Console.WriteLine("Please enter a valid age");
-            } while (!correctAge);
-
-            return age;
+                Console.Write("Enter your Age: ");
+                ageStr = Console.ReadLine();
+                ageCaptured = IsNum(ageStr);
+                if (!ageCaptured)
+                {
+                    Console.WriteLine("Invalid Age");
+                }
+            } while (!ageCaptured);
+            return ageStr;
         }
 
-        private static int ConvertToNumber(string v)
+        private static string PromptName()
         {
-            int age = 0;
-
-            try
-            {
-                age = int.Parse(v);
-            }
-            catch (Exception e)
-            {
-                age = -1;
-                Console.WriteLine("Invalid age.");
-            }
-
-            return age;
-        }
-
-        private static bool IsNumber(string v)
-        {
-            return ConvertToNumber(v) > 0 ? true : false;
-        }
-
-        private static string PromptUserForName()
-        {
-            Console.Write("What is your name?: ");
+            Console.Write("What Is your Name: ");
             return Console.ReadLine();
+        }
+
+        private static void DoNameIsANumber(string nameStr, string ageStr)
+        {
+            if (nameStr == "99")
+            {
+                Console.WriteLine("I think your Boss Maxwell Smart is Great! I also Have crush on you!");
+                Console.WriteLine("Look at this video https://www.youtube.com/watch?v=I6UQW64hxMI");
+                if (int.Parse(ageStr) > 29)
+                {
+                    Console.WriteLine("You really don't look a day over 29");
+
+                }
+            }
+            else
+            {
+                Console.WriteLine("Your Parents were Mathematicians! ");
+
+            }
         }
     }
 }
