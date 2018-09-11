@@ -17,7 +17,6 @@ namespace HelloConsole
 
             switch (args.Length)
             {
-
                 case 0:
                     {
                         string appConfigName = ConfigurationManager.AppSettings["name"];
