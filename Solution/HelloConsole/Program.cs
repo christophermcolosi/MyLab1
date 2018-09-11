@@ -29,7 +29,7 @@ namespace HelloConsole
 
                             if (!IsNum(appConfigAge))
                             {
-                                Console.WriteLine($"You cannot be {appConfigAge} years old...");
+                                Console.WriteLine($"You cannot be {appConfigAge} years old...check your config");
                                 ageStr = PromptAge();
                             }
                             else
@@ -47,7 +47,7 @@ namespace HelloConsole
                             nameStr = PromptName();
                             if (!IsNum(appConfigAge))
                             {
-                                Console.WriteLine($"You cannot be {appConfigAge} years old...");
+                                Console.WriteLine($"You cannot be {appConfigAge} years old...check your config");
                                 ageStr = PromptAge();
                             }
                             else
