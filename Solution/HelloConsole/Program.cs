@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 
 namespace HelloConsole
 {
@@ -6,14 +7,38 @@ namespace HelloConsole
     {
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", @"C:\Code\MyLab1\App.config");
+
             string name = "";
             int age = 0;
 
             switch (args.Length)
             {
                 case 0:
-                    name = PromptUserForName();
-                    age = PromptUserForAge();
+                    string appConfigName = ConfigurationManager.AppSettings["name"];
+                    string appConfigAge = ConfigurationManager.AppSettings["age"];
+
+                    if (!string.IsNullOrEmpty(appConfigName) && !string.IsNullOrEmpty(appConfigAge))
+                    {
+                        name = appConfigName;
+                        age = ConvertToNumber(appConfigAge);
+                    }
+                    else if (!string.IsNullOrEmpty(appConfigName))
+                    {
+                        name = appConfigName;
+                        age = PromptUserForAge();
+                    }
+                    else if (!string.IsNullOrEmpty(appConfigAge))
+                    {
+                        name = PromptUserForName();
+                        age = ConvertToNumber(appConfigAge);
+                    }
+                    else
+                    {
+                        name = PromptUserForName();
+                        age = PromptUserForAge();
+                    }
+
                     break;
                 case 1:
                     if (IsNumber(args[0]))
