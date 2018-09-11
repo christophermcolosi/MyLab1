@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HelloConsole
 {
@@ -10,70 +6,91 @@ namespace HelloConsole
     {
         static void Main(string[] args)
         {
-            if (args.Length > 0)
+            string name = "";
+            int age = 0;
+
+            switch (args.Length)
             {
-                if (args.Length > 2)
-                {
-                    Console.WriteLine("Error: You may only enter a maximum of 2 arguments: a name and age.");
-                }
-
-
-                if (args.Length == 2)
-                {
-                    var name = args[0];
-
-                    int age;
-
-                    bool success = Int32.TryParse(args[1], out age);
-
-                    if (success)
+                case 0:
+                    name = PromptUserForName();
+                    age = PromptUserForAge();
+                    break;
+                case 1:
+                    if (IsNumber(args[0]))
                     {
-                        Console.WriteLine($"{name} is {age} years old.");
+                        name = PromptUserForName();
+                        age = ConvertToNumber(args[0]);
                     }
                     else
                     {
-                        Console.WriteLine("Error: please enter a valid age.");
+                        name = args[0];
+                        age = PromptUserForAge();
                     }
-                }
-                else
-                {
-                    var age = args[0];
-                    int convertedAge;
 
-                    if (Int32.TryParse(age, out convertedAge))
-                    {
-                        Console.Write("Type your first name and press enter: ");
-                        var name = Console.ReadLine();
+                    break;
+                case 2:
+                    name = args[0];
+                    age = ConvertToNumber(args[1]);
+                    break;
+                default:
+                    Console.WriteLine("You messed up");
+                    break;
 
-                        Console.WriteLine($"{name} is {convertedAge} years old.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error: Invalid age.");
-                    }
-                }
             }
-            else
-            {
-                Console.Write("Type your first name and press enter: ");
-                var name = Console.ReadLine();
 
-                Console.Write($"How old are you, {name}?: ");
-                var age = Console.ReadLine();
-
-                int convertedAge;
-
-                if (Int32.TryParse(age, out convertedAge))
-                {
-                    Console.WriteLine($"{name} is {convertedAge} years old.");
-                }
-                else
-                {
-                    Console.WriteLine("Error: please enter a valid age.");
-                }
-            }
+            Report(name, age);
 
             Console.ReadKey();
+        }
+
+        private static void Report(string name, int age)
+        {
+            Console.WriteLine($"{name} is {age} years old.");
+        }
+
+        private static int PromptUserForAge()
+        {
+            var age = 0;
+            bool correctAge = false;
+
+            do
+            {
+                Console.Write("How old are you?: ");
+                age = ConvertToNumber(Console.ReadLine());
+                correctAge = age > 0 ? true : false;
+
+                if (!correctAge)
+                    Console.WriteLine("Please enter a valid age");
+            } while (!correctAge);
+
+            return age;
+        }
+
+        private static int ConvertToNumber(string v)
+        {
+            int age = 0;
+
+            try
+            {
+                age = int.Parse(v);
+            }
+            catch (Exception e)
+            {
+                age = -1;
+            }
+
+            return age;
+        }
+
+        private static bool IsNumber(string v)
+        {
+            return ConvertToNumber(v) > 0 ? true : false;
+        }
+
+        private static string PromptUserForName()
+        {
+            Console.Write("What is your name?: ");
+            return Console.ReadLine();
         }
     }
 }
