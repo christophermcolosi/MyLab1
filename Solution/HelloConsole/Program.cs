@@ -8,7 +8,7 @@ namespace HelloConsole
         static void Main(string[] args)
         {
             //look specifically at this location for App.config file
-            AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", @"C:\Code\MyLab1\App.config");
+            //AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", @"C:\Code\MyLab1\App.config");
 
             string name = "";
             int age = 0;
@@ -103,6 +103,7 @@ namespace HelloConsole
             catch (Exception e)
             {
                 age = -1;
+                Console.WriteLine("Invalid age.");
             }
 
             return age;
