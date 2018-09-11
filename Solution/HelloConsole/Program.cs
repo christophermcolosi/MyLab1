@@ -7,6 +7,7 @@ namespace HelloConsole
     {
         static void Main(string[] args)
         {
+            //look specifically at this location for App.config file
             AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", @"C:\Code\MyLab1\App.config");
 
             string name = "";
